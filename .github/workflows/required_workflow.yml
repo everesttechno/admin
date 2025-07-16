@@ -1,4 +1,4 @@
-name: Call a reusable workflow
+name: Call by required workflow
 
 on:
   push:
@@ -9,5 +9,24 @@ on:
       - .github/workflows/**
 
 jobs:
-  call-workflow:
-    uses: everesttechno/admin/.github/workflows/codeql.yml@main
+  analyze:
+    name: Analyze 
+    runs-on: 'ubuntu-latest'
+    permissions:
+      # required for all workflows
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Prepare CodeQL CLI
+      run: |
+        wget https://github.com/github/codeql-cli-binaries/releases/download/v2.15.3/codeql-linux64.zip && 
+        unzip codeql-linux64.zip
+
+    - name: Create codeql db
+      run: codeql/codeql database create codeql-db --language=actions --source-root ./
