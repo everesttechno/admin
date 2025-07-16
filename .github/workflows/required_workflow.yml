@@ -25,13 +25,11 @@ jobs:
 
     - name: Prepare CodeQL CLI
       run: |
-        latest_version=$(curl -s https://api.github.com/repos/github/codeql-action/releases/latest | jq -r .tag_name)
-        curl -L -o codeql-bundle.tar.gz https://github.com/github/codeql-action/releases/download/${latest_version}/codeql-bundle-linux64.tar.gzmkdir codeql-cli
+        curl -L -o codeql-bundle.tar.gz https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.22.1/codeql-bundle-linux64.tar.gz
         tar -xzf codeql-bundle.tar.gz -C codeql-cli --strip-components=1
-
-        # Add CodeQL CLI to PATH for subsequent steps
-        echo "${PWD}/codeql-cli" >> $GITHUB_PATH
-        echo "CodeQL CLI set up at: ${PWD}/codeql-cli"
+        sudo mv codeql /usr/local/codeql
+        sudo ln -s /usr/local/codeql/codeql /usr/local/bin/codeql
+        codeql --version
         codeql resolve packs
 
     - name: Create codeql db
