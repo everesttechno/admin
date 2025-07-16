@@ -17,15 +17,8 @@ jobs:
     steps:
       - name: 'Checkout Code'
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
-      - name: 'Checkout Workflow Config'
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # ratchet:actions/checkout@v4
-        env:
-          GH_REPO_OWNER: ${{ github.repository_owner }}
-        with:
-          repository: 'google/github-team'
-          path: action_scanning
       - name: 'Run Actions semgrep scan'
-        run: 'semgrep scan --sarif --config action_scanning/semgrep-rules --config "p/github-actions" --sarif-output semgrep-results-actions.sarif || true'
+        run: 'semgrep scan --sarif --config "p/github-actions" --sarif-output semgrep-results-actions.sarif || true'
       - name: 'Save Actions SARIF results as artifact'
         uses: 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' # ratchet:actions/upload-artifact@v4
         with:
