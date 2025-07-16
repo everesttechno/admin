@@ -27,9 +27,11 @@ jobs:
       run: |
         wget https://github.com/github/codeql-cli-binaries/releases/download/v2.22.1/codeql-linux64.zip && 
         unzip codeql-linux64.zip
+        sudo mv codeql /usr/local/codeql
+        sudo ln -s /usr/local/codeql/codeql /usr/local/bin/codeql
 
     - name: Create codeql db
-      run: codeql/codeql database create codeql-db --language=actions --source-root ./
+      run: codeql database create codeql-db --language=actions --source-root ./
 
     - name: Run codeql analysis
-      run: codeql/codeql database analyze codeql-db --format=sarif-latest --output=/tmp/codeql-results.sarif
+      run: codeql database analyze codeql-db --format=sarif-latest --output=/tmp/codeql-results.sarif
