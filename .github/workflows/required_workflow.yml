@@ -1,0 +1,13 @@
+name: Call a reusable workflow
+
+on:
+  push:
+    paths:
+      - .github/workflows/**
+  pull_request:
+    paths:
+      - .github/workflows/**
+
+jobs:
+  call-workflow:
+    uses: everesttechno/admin/.github/workflows/codeql.yml@main
